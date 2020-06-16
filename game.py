@@ -25,9 +25,7 @@ screenWidth = 100
 class personagem: 
     def __init__(self):
         self.nome = ''
-        self.vida = 0
-        self.magia = 0
-        self.poderes = []
+        self.itens = []
         self.localizacao = 'z1'
         self.ganhouJogo = False
         
@@ -64,7 +62,7 @@ def opcoesTelaInicial():
 
 #função que vai desenhar a tela inicial
 def telaInicial():
-    os.system('clear')
+    os.system('cls')
     print('############################')
     print('##     SEJA BEM-VINDO     ##')
     print('##      A CTRL+PLAY       ##')
@@ -79,7 +77,7 @@ def telaInicial():
     
 #função que vai desenhar a tela de ajuda
 def menuAjuda():
-    os.system('clear')
+    os.system('cls')
     print('############################')
     print('##     SEJA BEM-VINDO     ##')
     print('##      A CTRL+PLAY       ##')
@@ -90,6 +88,8 @@ def menuAjuda():
     print('- Digite o seu comando para executá-lo')
     print('- Use "olhar" para inspecionar algo')
     print('- Boa sorte e se divirta!')
+    input('> ')
+    telaInicial()
        
 ## MAPA ##   
 # ---------------------
@@ -112,9 +112,6 @@ ACIMA = 'acima', 'norte'
 ABAIXO = 'abaixo', 'sul'
 AESQUERDA  = 'esquerda', 'oeste'
 ADIREITA = 'direita', 'leste'
-
-#dicionário dos lugares que o jogador vai passar?
-lugaresVisitados = {'z1': False, 'z2': False, 'z3': False, 'z4': False, 'z5': False, 'z6': False}
 
 #dicionário com as informações de cada zona
 mapaCidade = {
@@ -181,7 +178,7 @@ mapaCidade = {
     'z7' : {
         NOMEZONA: 'Sala do Delegado',
         DESCRICAO: 'A sala está toda revirada, com mesas dispostas como se fossem uma barreira para a janela, há jornais espalhados pelo chão.',
-        AOEXAMINAR: 'O jornal diz que pessoas atacaram outras, comendo-as. Você encontrou uma espingarda debaixo dos papéis.',
+        AOEXAMINAR: 'O jornal diz que pessoas atacaram outras, comendo-as. Você encontrou uma espingarda debaixo dos papéis, com apenas uma bala.',
         SOLUCIONADO: False,
         ACIMA: 'z4',
         ABAIXO: 'none',
@@ -214,16 +211,10 @@ mapaCidade = {
 
 #função para mostrar a localização do jogador no mapa
 def mostrarLocalizacao():
-    print('\n' + ('#' * (4 + len(player.localizacao))))
-    print('# ' + player.localizacao.upper() + ' #')
-    print('# ' + mapaCidade[player.localizacao][DESCRICAO] + ' #')
-    print('\n' + ('#' * (4 + len(player.localizacao))))
-    
-#location = belo horizonte - 13 letras
-##################
-# belo horizonte #
-# UHFUFUAHDADNJKASDKAJS #
-##################
+    print('===================================')
+    print(mapaCidade[player.localizacao][NOMEZONA].upper())
+    print(mapaCidade[player.localizacao][DESCRICAO])
+    print('===================================')
 
 #função para pegar a ação do usuário
 def prompt():
@@ -246,21 +237,36 @@ def moverPlayer(acao):
     pergunta = "Para onde você gostaria de se mover? \n"
     movimento = input(pergunta)
     if movimento in ['acima', 'norte']:
-        destino = mapaCidade[player.localizacao][ACIMA]
-        gerenciadorMovimento(destino)
+        if mapaCidade[player.localizacao][ACIMA] == 'none':
+            print('\nNão é possível ir por aí, escolha outro caminho')
+            prompt()
+        else:
+            destino = mapaCidade[player.localizacao][ACIMA]
+            gerenciadorMovimento(destino)
     elif movimento in ['abaixo', 'sul']:
-        destino = mapaCidade[player.localizacao][ABAIXO]
-        gerenciadorMovimento(destino)
+        if mapaCidade[player.localizacao][ABAIXO] == 'none':
+            print('\nNão é possível ir por aí, escolha outro caminho')
+            prompt()
+        else:
+            destino = mapaCidade[player.localizacao][ABAIXO]
+            gerenciadorMovimento(destino)
     elif movimento in ['esquerda', 'oeste']:
-        destino = mapaCidade[player.localizacao][AESQUERDA]
-        gerenciadorMovimento(destino)
+        if mapaCidade[player.localizacao][AESQUERDA] == 'none':
+            print('\nNão é possível ir por aí, escolha outro caminho')
+            prompt()
+        else:
+            destino = mapaCidade[player.localizacao][AESQUERDA]
+            gerenciadorMovimento(destino)
     elif movimento in ['direita', 'leste']:
-        destino = mapaCidade[player.localizacao][ADIREITA]
-        gerenciadorMovimento(destino)
+        if mapaCidade[player.localizacao][ADIREITA] == 'none':
+            print('\nNão é possível ir por aí, escolha outro caminho')
+            prompt()
+        else:
+            destino = mapaCidade[player.localizacao][ADIREITA]
+            gerenciadorMovimento(destino)
         
 #função que gerencia o movimento do personagem principal
 def gerenciadorMovimento(destino):
-    print("\n" + "Você se moveu para " + destino + ".")
     player.localizacao = destino
     mostrarLocalizacao()
 
@@ -269,21 +275,74 @@ def playerExaminar(acao):
         print("Não há nada mais de interessante aqui.")
     else:
         print(mapaCidade[player.localizacao][AOEXAMINAR])
+        mapaCidade[player.localizacao][SOLUCIONADO] = True
+        if mapaCidade[player.localizacao][NOMEZONA] == 'Sala do Delegado':
+            if 'Espingarda' in player.itens == False:
+                player.itens.append('Espingarda')
+                print('\nVocê coletou a Espingarda. \n')
+        if mapaCidade[player.localizacao][NOMEZONA] == 'Salão Comunitário':
+            if 'Chave de Carro' in player.itens == False:
+                player.itens.append('Chave de Carro')
+                print('\nVocê coletou a Chave do Carro. \n')
+                time.sleep(0.5)
+                print('Atirar na pessoa que o ataca?\n')
+                acao = input('> ')
+                if acao.lower in ['atirar', 'sim']:
+                    print('\nVocê matou quem te atacava, liberando o caminho até o carro. Você fugiu da cidade no carro o mais rápido possível.')
+                elif acao.lower in ['fugir', 'não', 'não atirar']:
+                    print('\nVocê não atirou em quem te atacava e acabou sendo mordido!')
+                    gameOver('infectado')
+        if mapaCidade[player.localizacao][NOMEZONA] == 'Laboratório':
+            if 'Vacina' in player.itens == False:
+                player.itens.append('Vacina')
+                print('\nVocê coletou a vacina.')
+                print('\nVárias pessoas loucas invadiram a sala em que você está')
+                time.sleep(0.5)
+                print('\nE elas estão te atacando!')
+                if 'Espingarda' in player.itens:
+                    print('Atirar nas pessoas que o ataca?\n')
+                    acao = input('> ')
+                    if acao.lower in ['atirar', 'sim']:
+                        print('\nVocê matou algumas pessoas, mas eles eram muitos e você acabou sendo mordido mesmo assim!')
+                        time.sleep(0.5)
+                        print('\nVocê quer usar a vacina que conseguiu?')
+                        acao = input('> ')
+                        if acao.lower in ['sim', 'usar']:
+                            print('\nVocê usou a vacina em si mesmo.')
+                            gameOver('infectado')
+                        elif acao.lower in ['não', 'não usar']:
+                            print('\nVocê não usou a vacina em si mesmo, sabendo que não lhe resta muito tempo de vida.')
+                            time.sleep
+                            if 'Chave do Carro' or 'Espingarda' in player.itens:
+                                print('\nVocê entrega todos os itens que tem consigo para seu filho, para que ele tenha uma chance de escapar.')
+                                time.sleep(0.5)
+                                print('\nMas infelizmente, você não sobrevierá para saber se ele vai conseguir ou não.')
+                                gameOver('infectado')
+                            elif acao.lower in ['fugir', 'não', 'não atirar']:
+                                print('\nVocê não se defendeu e ambos acabaram sendo mordidos!')
+                    
+                
+        
         
 # FUNCIONAMENTO DO JOGO #
+
+#função de game over
+def gameOver(causa):
+    return
     
 #loop principal do jogo
 def loopPrincipal():
     while player.ganhouJogo is False:
         prompt()
+
         #fazer verificações aqui
         
 #função de começar devidamente o jogo
 def iniciarJogo():
-    os.system('clear')
+    os.system('cls')
     
     #Pega a informação do nome do usuario
-    pergunta1 = "Olá usuário, qual o seu nome? \n"
+    pergunta1 = "Olá estranho, qual o seu nome? \n"
     #loop que cria efeito de digitação
     for char in pergunta1:
         sys.stdout.write(char)
@@ -291,21 +350,24 @@ def iniciarJogo():
         time.sleep(0.05)
     #guarda o nome do player através do input
     player.nome = input('> ')
+    
     #diz o nome ao usuario
-    mensagem1 = "Seja bem-vindx, " + player.nome
+    mensagem1 = "Olá, " + player.nome
     #loop que cria efeito de digitação
     for char in mensagem1:
         sys.stdout.write(char)
         sys.stdout.flush()
         time.sleep(0.05)
     
-    mensagem2 = "Vejo que está acordado, finalmente! \n Algo muito estranho aconteceu nesta cidade, mas tenho muito medo de ir lá fora.... \n Espera, você vai? Então é melhor tomar muito, muito cuidado!"
+    mensagem2 = "\nVejo que está acordado, finalmente! \nAlgo muito estranho aconteceu nesta cidade, mas tenho muito medo de ir lá fora.... \nEspera, você vai? Então é melhor tomar muito, muito cuidado!\n"
     for char in mensagem2:
         sys.stdout.write(char)
         sys.stdout.flush()
         time.sleep(0.02)
     
-    os.system('clear')
+    input('> ')
+    os.system('cls')
+    mostrarLocalizacao()
     loopPrincipal()
         
         
