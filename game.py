@@ -28,7 +28,8 @@ class personagem:
         self.vida = 0
         self.magia = 0
         self.poderes = []
-        self.localizacao = 'z0'
+        self.localizacao = 'z1'
+        self.ganhouJogo = False
         
 #criando um objeto do tipo player
 player = personagem()
@@ -89,13 +90,7 @@ def menuAjuda():
     print('- Digite o seu comando para executá-lo')
     print('- Use "olhar" para inspecionar algo')
     print('- Boa sorte e se divirta!')
-    
-# FUNCIONAMENTO DO JOGO #
-    
-#função de começar devidamente o jogo
-def iniciarJogo():
-    print('Jogo iniciado')
-    
+       
 ## MAPA ##   
 # ---------------------
 # |  z1  |  z2 |  z3  |
@@ -113,10 +108,10 @@ NOMEZONA = ''
 DESCRICAO = 'DESCRICAO'
 AOEXAMINAR = 'examine'
 SOLUCIONADO = False
-ACIMA = 'ACIMA', 'north'
-ABAIXO = 'ABAIXO', 'south'
-AESQUERDA  = 'left', 'west'
-ADIREITA = 'right', 'east'
+ACIMA = 'acima', 'norte'
+ABAIXO = 'abaixo', 'sul'
+AESQUERDA  = 'esquerda', 'oeste'
+ADIREITA = 'direita', 'leste'
 
 #dicionário dos lugares que o jogador vai passar?
 lugaresVisitados = {'z1': False, 'z2': False, 'z3': False, 'z4': False, 'z5': False, 'z6': False}
@@ -124,94 +119,94 @@ lugaresVisitados = {'z1': False, 'z2': False, 'z3': False, 'z4': False, 'z5': Fa
 #dicionário com as informações de cada zona
 mapaCidade = {
     'z1' : {
-        NOMEZONA : 'Centro',
-        DESCRICAO : 'Centro da cidade, com várias lojas e parques',
-        AOEXAMINAR : 'Todas as lojas foram saqueadas, algumas queimadas. Os parques estão cheios de pássaros mortos.',
-        SOLUCIONADO : False,
-        ACIMA : 'none',
-        ABAIXO : 'z4',
-        AESQUERDA  : 'none',
-        ADIREITA : 'z2',
+        NOMEZONA: 'Centro',
+        DESCRICAO: 'Centro da cidade, com várias lojas e parques',
+        AOEXAMINAR: 'Todas as lojas foram saqueadas, algumas queimadas. Os parques estão cheios de pássaros mortos.',
+        SOLUCIONADO: False,
+        ACIMA: 'none',
+        ABAIXO: 'z4',
+        AESQUERDA: 'none',
+        ADIREITA: 'z2',
     }, 
     'z2' : {
-        NOMEZONA : 'Suburbio',
-        DESCRICAO : 'Grande área residencial da cidade',
-        AOEXAMINAR : 'Algumas casas estão abertas, outras estão lacradas de maneira improvidada. Está tudo silencioso até demais.',
-        SOLUCIONADO : False,
-        ACIMA : 'none',
-        ABAIXO : 'z5',
-        AESQUERDA  : 'z1',
-        ADIREITA : 'z3',
+        NOMEZONA: 'Suburbio',
+        DESCRICAO: 'Grande área residencial da cidade',
+        AOEXAMINAR: 'Algumas casas estão abertas, outras estão lacradas de maneira improvidada. Está tudo silencioso até demais.',
+        SOLUCIONADO: False,
+        ACIMA: 'none',
+        ABAIXO: 'z5',
+        AESQUERDA: 'z1',
+        ADIREITA: 'z3',
     },
     'z3' : {
-        NOMEZONA : 'Delegacia',
-        DESCRICAO : 'Maior Departamento Policial da cidade, centro de operações policiais',
-        AOEXAMINAR : 'O prédio está depredado, várias viaturas posicionadas como barreira se encontram pegando fogo ou quebradas, há um barulho de murmurio vindo de dentro do prédio',
-        SOLUCIONADO : False,
-        ACIMA : 'none',
-        ABAIXO : 'z6',
-        AESQUERDA  : 'z2',
-        ADIREITA : 'none',
+        NOMEZONA: 'Delegacia',
+        DESCRICAO: 'Maior Departamento Policial da cidade, centro de operações policiais',
+        AOEXAMINAR: 'O prédio está depredado, várias viaturas posicionadas como barreira se encontram pegando fogo ou quebradas, há um barulho de murmurio vindo de dentro do prédio',
+        SOLUCIONADO: False,
+        ACIMA: 'none',
+        ABAIXO: 'z6',
+        AESQUERDA: 'z2',
+        ADIREITA: 'none',
     },
     'z4' : {
-        NOMEZONA : 'Igreja',
-        DESCRICAO : 'Maior centro religioso da cidade, com um grande salão.',
-        AOEXAMINAR : 'Barricadas improvidadas cercam a igreja, mas parte dela está caída. Os vidros e as portas também foram lacradas com madeira. Não dá ver nada dentro do prédio.',
-        SOLUCIONADO : False,
-        ACIMA : 'z1',
-        ABAIXO : 'z7',
-        AESQUERDA  : 'none',
-        ADIREITA : 'z5',
+        NOMEZONA: 'Igreja',
+        DESCRICAO: 'Maior centro religioso da cidade, com um grande salão.',
+        AOEXAMINAR: 'Barricadas improvidadas cercam a igreja, mas parte dela está caída. Os vidros e as portas também foram lacradas com madeira. Não dá ver nada dentro do prédio.',
+        SOLUCIONADO: False,
+        ACIMA: 'z1',
+        ABAIXO: 'z7',
+        AESQUERDA: 'none',
+        ADIREITA: 'z5',
     },
     'z5' : {
-        NOMEZONA : 'Hospital',
-        DESCRICAO : 'Hospital público da cidade.',
-        AOEXAMINAR : 'Muitas ambulâncias cercam o local, há sangue e materiais hospitalares jogado pelo chão. Algumas entradas estão lacradas de maneira improvidsada.',
-        SOLUCIONADO : False,
-        ACIMA : 'z2',
-        ABAIXO : 'z8',
-        AESQUERDA  : 'z4',
-        ADIREITA : 'z6',
+        NOMEZONA: 'Hospital',
+        DESCRICAO: 'Hospital público da cidade.',
+        AOEXAMINAR: 'Muitas ambulâncias cercam o local, há sangue e materiais hospitalares jogado pelo chão. Algumas entradas estão lacradas de maneira improvidsada.',
+        SOLUCIONADO: False,
+        ACIMA: 'z2',
+        ABAIXO: 'z8',
+        AESQUERDA: 'z4',
+        ADIREITA: 'z6',
     },
     'z6' : {
-        NOMEZONA : 'Prefeitura',
-        DESCRICAO : 'O maior prédio da cidade, a prefeitura com fórum e câmara municipal.',
-        AOEXAMINAR : 'Há uma grande barricada cercando o prédio, com algumas partes destruídas. Várias viaturas e carros também estão amontoados. Há barulhos de passos dentro do prédio.',
-        SOLUCIONADO : False,
-        ACIMA : 'z3',
-        ABAIXO : 'z9',
-        AESQUERDA  : 'z5',
-        ADIREITA : 'none',
+        NOMEZONA: 'Prefeitura',
+        DESCRICAO: 'O maior prédio da cidade, a prefeitura com fórum e câmara municipal.',
+        AOEXAMINAR: 'Há uma grande barricada cercando o prédio, com algumas partes destruídas. Várias viaturas e carros também estão amontoados. Há barulhos de passos dentro do prédio.',
+        SOLUCIONADO: False,
+        ACIMA: 'z3',
+        ABAIXO: 'z9',
+        AESQUERDA: 'z5',
+        ADIREITA: 'none',
     },
     'z7' : {
-        NOMEZONA : 'Sala do Delegado',
-        DESCRICAO : 'A sala está toda revirada, com mesas dispostas como se fossem uma barreira para a janela, há jornais espalhados pelo chão.',
-        AOEXAMINAR : 'O jornal diz que pessoas atacaram outras, comendo-as. Você encontrou uma espingarda debaixo dos papéis.',
-        SOLUCIONADO : False,
-        ACIMA : 'z4',
-        ABAIXO : 'none',
-        AESQUERDA  : 'none',
-        ADIREITA : 'z8',
+        NOMEZONA: 'Sala do Delegado',
+        DESCRICAO: 'A sala está toda revirada, com mesas dispostas como se fossem uma barreira para a janela, há jornais espalhados pelo chão.',
+        AOEXAMINAR: 'O jornal diz que pessoas atacaram outras, comendo-as. Você encontrou uma espingarda debaixo dos papéis.',
+        SOLUCIONADO: False,
+        ACIMA: 'z4',
+        ABAIXO: 'none',
+        AESQUERDA: 'none',
+        ADIREITA: 'z8',
     },
     'z8' : {
-        NOMEZONA : 'Salão Comunitário',
-        DESCRICAO : 'O cheio de sangue e pessoas mortas é forte, há muitos objetos espalhos pelo chão.',
-        AOEXAMINAR : 'Você encontrou uma chave de um carro que estava lá fora. Uma pessoa (se isso pode ser chamado de pessaoa) está te atacando!',
-        SOLUCIONADO : False,
-        ACIMA : 'z5',
-        ABAIXO : 'none',
-        AESQUERDA  : 'z7',
-        ADIREITA : 'z9',
+        NOMEZONA: 'Salão Comunitário',
+        DESCRICAO: 'O cheio de sangue e pessoas mortas é forte, há muitos objetos espalhos pelo chão.',
+        AOEXAMINAR: 'Você encontrou uma chave de um carro que estava lá fora. Uma pessoa (se isso pode ser chamado de pessaoa) está te atacando!',
+        SOLUCIONADO: False,
+        ACIMA: 'z5',
+        ABAIXO: 'none',
+        AESQUERDA: 'z7',
+        ADIREITA: 'z9',
     },
     'z9' : {
-        NOMEZONA : 'Laboratório',
-        DESCRICAO : 'O laboratório está todo revirado e destruído, mas uma caixa permanece segura dentro de uma, a porta não está trancada.',
-        AOEXAMINAR : 'Você encontrou uma vacina, mas apenas uma.',
-        SOLUCIONADO : False,
-        ACIMA : 'z6',
-        ABAIXO : 'none',
-        AESQUERDA  : 'z8',
-        ADIREITA : 'none',
+        NOMEZONA: 'Laboratório',
+        DESCRICAO: 'O laboratório está todo revirado e destruído, mas uma caixa permanece segura dentro de uma, a porta não está trancada.',
+        AOEXAMINAR: 'Você encontrou uma vacina, mas apenas uma.',
+        SOLUCIONADO: False,
+        ACIMA: 'z6',
+        ABAIXO: 'none',
+        AESQUERDA: 'z8',
+        ADIREITA: 'none',
     }
 }
 
@@ -239,3 +234,80 @@ def prompt():
     while acao.lower() not in acoesAceitaveis:
         print('Ação desconhecida. Por favor, tente novamente. \n')
         acao.input('> ')
+    if acao.lower() == 'sair':
+        sys.exit()
+    elif acao.lower() in ['andar', 'mover']:
+        moverPlayer(acao.lower())
+    elif acao.lower() in ['inspecionar', 'olhar', 'examinar', 'interagir']:
+        playerExaminar(acao.lower())
+
+#função de mover o personagem principal
+def moverPlayer(acao):
+    pergunta = "Para onde você gostaria de se mover? \n"
+    movimento = input(pergunta)
+    if movimento in ['acima', 'norte']:
+        destino = mapaCidade[player.localizacao][ACIMA]
+        gerenciadorMovimento(destino)
+    elif movimento in ['abaixo', 'sul']:
+        destino = mapaCidade[player.localizacao][ABAIXO]
+        gerenciadorMovimento(destino)
+    elif movimento in ['esquerda', 'oeste']:
+        destino = mapaCidade[player.localizacao][AESQUERDA]
+        gerenciadorMovimento(destino)
+    elif movimento in ['direita', 'leste']:
+        destino = mapaCidade[player.localizacao][ADIREITA]
+        gerenciadorMovimento(destino)
+        
+#função que gerencia o movimento do personagem principal
+def gerenciadorMovimento(destino):
+    print("\n" + "Você se moveu para " + destino + ".")
+    player.localizacao = destino
+    mostrarLocalizacao()
+
+def playerExaminar(acao):
+    if mapaCidade[player.localizacao][SOLUCIONADO]:
+        print("Não há nada mais de interessante aqui.")
+    else:
+        print(mapaCidade[player.localizacao][AOEXAMINAR])
+        
+# FUNCIONAMENTO DO JOGO #
+    
+#loop principal do jogo
+def loopPrincipal():
+    while player.ganhouJogo is False:
+        prompt()
+        #fazer verificações aqui
+        
+#função de começar devidamente o jogo
+def iniciarJogo():
+    os.system('clear')
+    
+    #Pega a informação do nome do usuario
+    pergunta1 = "Olá usuário, qual o seu nome? \n"
+    #loop que cria efeito de digitação
+    for char in pergunta1:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    #guarda o nome do player através do input
+    player.nome = input('> ')
+    #diz o nome ao usuario
+    mensagem1 = "Seja bem-vindx, " + player.nome
+    #loop que cria efeito de digitação
+    for char in mensagem1:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    
+    mensagem2 = "Vejo que está acordado, finalmente! \n Algo muito estranho aconteceu nesta cidade, mas tenho muito medo de ir lá fora.... \n Espera, você vai? Então é melhor tomar muito, muito cuidado!"
+    for char in mensagem2:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(0.02)
+    
+    os.system('clear')
+    loopPrincipal()
+        
+        
+#chama a tela inicial
+telaInicial()
