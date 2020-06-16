@@ -19,7 +19,7 @@ import random
 #tamanho da tela do jogo
 screenWidth = 100
 
-# SETUP DA CLASSE DO PERSONAGEM # 
+# SETACIMA DA CLASSE DO PERSONAGEM # 
 
 #classe iniciada como ela mesma, com os seguintes atributos
 class personagem: 
@@ -36,15 +36,15 @@ player = personagem()
 # TELA INICIAL #
 
 #função que permite a seleção de opções do menu
-def titleScreenSelecions():
+def opcoesTelaInicial():
     #variável que vai guardar o input do usuário
     option = input("> ")
     #se o usuario escreveu "play", chama a função de começar o jogo
     if option.lower() == ("play"):
-        startGame()
+        iniciarJogo()
     #se o usuário escreveu "help", chama a função de exibir a tela de ajuda
     elif option.lower() == ("help"):
-        helpMenu()
+        menuAjuda()
     #se o usuario escreveu "quit", o sistema fechará o jogo
     elif option.lower() == ("quit"):
         sys.exit()
@@ -55,14 +55,14 @@ def titleScreenSelecions():
         print("Opção não reconhecida. Por favor, tente novamente")
         option = input("> ")
         if option.lower() == ("play"):
-            startGame()
+            iniciarJogo()
         elif option.lower() == ("help"):
-            helpMenu()
+            menuAjuda()
         elif option.lower() == ("quit"):
             sys.exit()
 
 #função que vai desenhar a tela inicial
-def titleScreen():
+def telaInicial():
     os.system('clear')
     print('############################')
     print('##     SEJA BEM-VINDO     ##')
@@ -74,10 +74,10 @@ def titleScreen():
     print('         - HELP -           ')
     print('         - QUIT -           ')
     print('     Copyright TM 2020      ')
-    titleScreenSelecions()
+    opcoesTelaInicial()
     
 #função que vai desenhar a tela de ajuda
-def helpMenu():
+def menuAjuda():
     os.system('clear')
     print('############################')
     print('##     SEJA BEM-VINDO     ##')
@@ -93,7 +93,7 @@ def helpMenu():
 # FUNCIONAMENTO DO JOGO #
     
 #função de começar devidamente o jogo
-def startGame():
+def iniciarJogo():
     print('Jogo iniciado')
     
 ## MAPA ##   
@@ -109,14 +109,14 @@ def startGame():
 #z9 - dentro do hospital - vacina
 
 #variáveis constantes que serão utilizadas no gameplay
-ZONENAME = ''
-DESCRIPTION = 'description'
-EXAMINATION = 'examine'
-SOLVED = False
-UP = 'up', 'north'
-DOWN = 'down', 'south'
-LEFT  = 'left', 'west'
-RIGH = 'right', 'east'
+NOMEZONA = ''
+DESCRICAO = 'DESCRICAO'
+AOEXAMINAR = 'examine'
+SOLUCIONADO = False
+ACIMA = 'ACIMA', 'north'
+ABAIXO = 'ABAIXO', 'south'
+AESQUERDA  = 'left', 'west'
+ADIREITA = 'right', 'east'
 
 #dicionário dos lugares que o jogador vai passar?
 lugaresVisitados = {'z1': False, 'z2': False, 'z3': False, 'z4': False, 'z5': False, 'z6': False}
@@ -124,104 +124,104 @@ lugaresVisitados = {'z1': False, 'z2': False, 'z3': False, 'z4': False, 'z5': Fa
 #dicionário com as informações de cada zona
 mapaCidade = {
     'z1' : {
-        ZONENAME : 'Centro',
-        DESCRIPTION : 'Centro da cidade, com várias lojas e parques',
-        EXAMINATION : 'Todas as lojas foram saqueadas, algumas queimadas. Os parques estão cheios de pássaros mortos.',
-        SOLVED : False,
-        UP : 'none',
-        DOWN : 'z4',
-        LEFT  : 'none',
-        RIGH : 'z2',
+        NOMEZONA : 'Centro',
+        DESCRICAO : 'Centro da cidade, com várias lojas e parques',
+        AOEXAMINAR : 'Todas as lojas foram saqueadas, algumas queimadas. Os parques estão cheios de pássaros mortos.',
+        SOLUCIONADO : False,
+        ACIMA : 'none',
+        ABAIXO : 'z4',
+        AESQUERDA  : 'none',
+        ADIREITA : 'z2',
     }, 
     'z2' : {
-        ZONENAME : 'Suburbio',
-        DESCRIPTION : 'Grande área residencial da cidade',
-        EXAMINATION : 'Algumas casas estão abertas, outras estão lacradas de maneira improvidada. Está tudo silencioso até demais.',
-        SOLVED : False,
-        UP : 'none',
-        DOWN : 'z5',
-        LEFT  : 'z1',
-        RIGH : 'z3',
+        NOMEZONA : 'Suburbio',
+        DESCRICAO : 'Grande área residencial da cidade',
+        AOEXAMINAR : 'Algumas casas estão abertas, outras estão lacradas de maneira improvidada. Está tudo silencioso até demais.',
+        SOLUCIONADO : False,
+        ACIMA : 'none',
+        ABAIXO : 'z5',
+        AESQUERDA  : 'z1',
+        ADIREITA : 'z3',
     },
     'z3' : {
-        ZONENAME : 'Delegacia',
-        DESCRIPTION : 'Maior Departamento Policial da cidade, centro de operações policiais',
-        EXAMINATION : 'O prédio está depredado, várias viaturas posicionadas como barreira se encontram pegando fogo ou quebradas, há um barulho de murmurio vindo de dentro do prédio',
-        SOLVED : False,
-        UP : 'none',
-        DOWN : 'z6',
-        LEFT  : 'z2',
-        RIGH : 'none',
+        NOMEZONA : 'Delegacia',
+        DESCRICAO : 'Maior Departamento Policial da cidade, centro de operações policiais',
+        AOEXAMINAR : 'O prédio está depredado, várias viaturas posicionadas como barreira se encontram pegando fogo ou quebradas, há um barulho de murmurio vindo de dentro do prédio',
+        SOLUCIONADO : False,
+        ACIMA : 'none',
+        ABAIXO : 'z6',
+        AESQUERDA  : 'z2',
+        ADIREITA : 'none',
     },
     'z4' : {
-        ZONENAME : 'Igreja',
-        DESCRIPTION : 'Maior centro religioso da cidade, com um grande salão.',
-        EXAMINATION : 'Barricadas improvidadas cercam a igreja, mas parte dela está caída. Os vidros e as portas também foram lacradas com madeira. Não dá ver nada dentro do prédio.',
-        SOLVED : False,
-        UP : 'z1',
-        DOWN : 'z7',
-        LEFT  : 'none',
-        RIGH : 'z5',
+        NOMEZONA : 'Igreja',
+        DESCRICAO : 'Maior centro religioso da cidade, com um grande salão.',
+        AOEXAMINAR : 'Barricadas improvidadas cercam a igreja, mas parte dela está caída. Os vidros e as portas também foram lacradas com madeira. Não dá ver nada dentro do prédio.',
+        SOLUCIONADO : False,
+        ACIMA : 'z1',
+        ABAIXO : 'z7',
+        AESQUERDA  : 'none',
+        ADIREITA : 'z5',
     },
     'z5' : {
-        ZONENAME : 'Hospital',
-        DESCRIPTION : 'Hospital público da cidade.',
-        EXAMINATION : 'Muitas ambulâncias cercam o local, há sangue e materiais hospitalares jogado pelo chão. Algumas entradas estão lacradas de maneira improvidsada.',
-        SOLVED : False,
-        UP : 'z2',
-        DOWN : 'z8',
-        LEFT  : 'z4',
-        RIGH : 'z6',
+        NOMEZONA : 'Hospital',
+        DESCRICAO : 'Hospital público da cidade.',
+        AOEXAMINAR : 'Muitas ambulâncias cercam o local, há sangue e materiais hospitalares jogado pelo chão. Algumas entradas estão lacradas de maneira improvidsada.',
+        SOLUCIONADO : False,
+        ACIMA : 'z2',
+        ABAIXO : 'z8',
+        AESQUERDA  : 'z4',
+        ADIREITA : 'z6',
     },
     'z6' : {
-        ZONENAME : 'Prefeitura',
-        DESCRIPTION : 'O maior prédio da cidade, a prefeitura com fórum e câmara municipal.',
-        EXAMINATION : 'Há uma grande barricada cercando o prédio, com algumas partes destruídas. Várias viaturas e carros também estão amontoados. Há barulhos de passos dentro do prédio.',
-        SOLVED : False,
-        UP : 'z3',
-        DOWN : 'z9',
-        LEFT  : 'z5',
-        RIGH : 'none',
+        NOMEZONA : 'Prefeitura',
+        DESCRICAO : 'O maior prédio da cidade, a prefeitura com fórum e câmara municipal.',
+        AOEXAMINAR : 'Há uma grande barricada cercando o prédio, com algumas partes destruídas. Várias viaturas e carros também estão amontoados. Há barulhos de passos dentro do prédio.',
+        SOLUCIONADO : False,
+        ACIMA : 'z3',
+        ABAIXO : 'z9',
+        AESQUERDA  : 'z5',
+        ADIREITA : 'none',
     },
     'z7' : {
-        ZONENAME : 'Sala do Delegado',
-        DESCRIPTION : 'A sala está toda revirada, com mesas dispostas como se fossem uma barreira para a janela, há jornais espalhados pelo chão.',
-        EXAMINATION : 'O jornal diz que pessoas atacaram outras, comendo-as. Você encontrou uma espingarda debaixo dos papéis.',
-        SOLVED : False,
-        UP : 'z4',
-        DOWN : 'none',
-        LEFT  : 'none',
-        RIGH : 'z8',
+        NOMEZONA : 'Sala do Delegado',
+        DESCRICAO : 'A sala está toda revirada, com mesas dispostas como se fossem uma barreira para a janela, há jornais espalhados pelo chão.',
+        AOEXAMINAR : 'O jornal diz que pessoas atacaram outras, comendo-as. Você encontrou uma espingarda debaixo dos papéis.',
+        SOLUCIONADO : False,
+        ACIMA : 'z4',
+        ABAIXO : 'none',
+        AESQUERDA  : 'none',
+        ADIREITA : 'z8',
     },
     'z8' : {
-        ZONENAME : 'Salão Comunitário',
-        DESCRIPTION : 'O cheio de sangue e pessoas mortas é forte, há muitos objetos espalhos pelo chão.',
-        EXAMINATION : 'Você encontrou uma chave de um carro que estava lá fora. Uma pessoa (se isso pode ser chamado de pessaoa) está te atacando!',
-        SOLVED : False,
-        UP : 'z5',
-        DOWN : 'none',
-        LEFT  : 'z7',
-        RIGH : 'z9',
+        NOMEZONA : 'Salão Comunitário',
+        DESCRICAO : 'O cheio de sangue e pessoas mortas é forte, há muitos objetos espalhos pelo chão.',
+        AOEXAMINAR : 'Você encontrou uma chave de um carro que estava lá fora. Uma pessoa (se isso pode ser chamado de pessaoa) está te atacando!',
+        SOLUCIONADO : False,
+        ACIMA : 'z5',
+        ABAIXO : 'none',
+        AESQUERDA  : 'z7',
+        ADIREITA : 'z9',
     },
     'z9' : {
-        ZONENAME : 'Laboratório',
-        DESCRIPTION : 'O laboratório está todo revirado e destruído, mas uma caixa permanece segura dentro de uma, a porta não está trancada.',
-        EXAMINATION : 'Você encontrou uma vacina, mas apenas uma.',
-        SOLVED : False,
-        UP : 'z6',
-        DOWN : 'none',
-        LEFT  : 'z8',
-        RIGH : 'none',
+        NOMEZONA : 'Laboratório',
+        DESCRICAO : 'O laboratório está todo revirado e destruído, mas uma caixa permanece segura dentro de uma, a porta não está trancada.',
+        AOEXAMINAR : 'Você encontrou uma vacina, mas apenas uma.',
+        SOLUCIONADO : False,
+        ACIMA : 'z6',
+        ABAIXO : 'none',
+        AESQUERDA  : 'z8',
+        ADIREITA : 'none',
     }
 }
 
 ## INTERATIVIDADE DO JOGO ##
 
 #função para mostrar a localização do jogador no mapa
-def printLocation():
+def mostrarLocalizacao():
     print('\n' + ('#' * (4 + len(player.localizacao))))
     print('# ' + player.localizacao.upper() + ' #')
-    print('# ' + mapaCidade[player.localizacao][DESCRIPTION] + ' #')
+    print('# ' + mapaCidade[player.localizacao][DESCRICAO] + ' #')
     print('\n' + ('#' * (4 + len(player.localizacao))))
     
 #location = belo horizonte - 13 letras
