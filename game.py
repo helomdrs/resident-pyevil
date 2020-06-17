@@ -343,14 +343,51 @@ def playerExaminar(acao):
 
 #função de game over
 def gameOver(causa):
-    return
+    print('\n##### G A M E  O V E R #########\n')
+    player.ganhouJogo = True
+    if causa == 'infectado':
+        final = "Você foi infectado por aquele que te atacou. Uma fome incontrolável toma conta do seu corpo, você já não se lembra do seu nome ou de quem é, vê apenas fome."
+        efeitoDigitacao(final)
+        print('\nVocê virou um zumbi.')
+    elif causa == 'fugiu':
+        final = "Você fugiu dessa cidade amaldiçoada o mais rápido possível, sem olhar para trás."
+        efeitoDigitacao(final)
+        print('\nVocê conseguiu fugir da cidade epicentro dos zumbis, mas sem a vacina.')
+    elif causa == 'não infectado':
+        final = "Você ainda está preso nessa cidade, cheia de criaturas famintas. A luta pela sobrevivência será diária."
+        efeitoDigitacao(final)
+        print('\nVocê não conseguiu fugir da cidade, mas ainda está lucido e ávido para sobreviver.')
+    elif causa == 'fugiu infectado':
+        final = "Mesmo sabendo que não tem muito tempo, você fugiu da cidade com a vacina, mas infectado com um único objetivo em mente: dar a alguém a oportunidade de salvar a humanidade."
+        efeitoDigitacao(final)
+        print('\nVocê fugiu da cidade infectado para tentar entregar a vacina a alguém.')
+    elif causa == 'fugiu com a vacina':
+        final = "Você conseguiu fugir da cidade com a vacina em mãos na esperança de encontrar alguém que possa disseminar a cura. Sua jornada só está começando."
+        efeitoDigitacao(final)
+        print('\nVocê fugiu da cidade sem ser infectado e com a vacina em mãos.')
+    print('\n###################################\n')
+    time.sleep(1)
+    print('Tentar novamente?\n')
+    opcao = input('> ')
+    if opcao.lower() in ['sim', 'tentar', 'reiniciar', 'jogar']:
+        os.system('cls')
+        telaInicial()
+    elif opcao.lower() in ['não', 'nao', 'sair']:
+        print('Obrigado por contar sua história aqui')
+        time.sleep(0.5)
+        sys.exit()
+    
     
 #loop principal do jogo
 def loopPrincipal():
     while player.ganhouJogo is False:
         prompt()
-
-        #fazer verificações aqui
+        
+def efeitoDigitacao(mensagem):
+    for char in mensagem:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(0.05)
         
 #função de começar devidamente o jogo
 def iniciarJogo():
@@ -359,26 +396,17 @@ def iniciarJogo():
     #Pega a informação do nome do usuario
     pergunta1 = "Olá estranho, qual o seu nome? \n"
     #loop que cria efeito de digitação
-    for char in pergunta1:
-        sys.stdout.write(char)
-        sys.stdout.flush()
-        time.sleep(0.05)
+    efeitoDigitacao(pergunta1)
     #guarda o nome do player através do input
     player.nome = input('> ')
     
     #diz o nome ao usuario
     mensagem1 = "Olá, " + player.nome
     #loop que cria efeito de digitação
-    for char in mensagem1:
-        sys.stdout.write(char)
-        sys.stdout.flush()
-        time.sleep(0.05)
+    efeitoDigitacao(mensagem1)
     
     mensagem2 = "\nVejo que está acordado, finalmente! \nAlgo muito estranho aconteceu nesta cidade, mas tenho muito medo de ir lá fora.... \nEspera, você vai? Então é melhor tomar muito, muito cuidado!\n"
-    for char in mensagem2:
-        sys.stdout.write(char)
-        sys.stdout.flush()
-        time.sleep(0.02)
+    efeitoDigitacao(mensagem2)
     
     input('> ')
     os.system('cls')
