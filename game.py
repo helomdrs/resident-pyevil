@@ -99,10 +99,6 @@ def menuAjuda():
 # ---------------------
 # |  z7  | z8 |   z9  |
 
-#z7 - dentro da delegacia - achou uma espingarda
-#z8 - dentro da igreja - chave de carro
-#z9 - dentro do hospital - vacina
-
 #variáveis constantes que serão utilizadas no gameplay
 NOMEZONA = ''
 DESCRICAO = 'DESCRICAO'
@@ -270,73 +266,90 @@ def gerenciadorMovimento(destino):
     player.localizacao = destino
     mostrarLocalizacao()
 
+#função que desencadeia ações no mapa
 def playerExaminar(acao):
     if mapaCidade[player.localizacao][SOLUCIONADO]:
         print("Não há nada mais de interessante aqui.")
     else:
-        print(mapaCidade[player.localizacao][AOEXAMINAR])
-        mapaCidade[player.localizacao][SOLUCIONADO] = True
-        if mapaCidade[player.localizacao][NOMEZONA] == 'Sala do Delegado':
-            if 'Espingarda' in player.itens == False:
-                player.itens.append('Espingarda')
-                print('\nVocê coletou a Espingarda. \n')
-        if mapaCidade[player.localizacao][NOMEZONA] == 'Salão Comunitário':
-            if 'Chave de Carro' in player.itens == False:
-                player.itens.append('Chave de Carro')
-                print('\nVocê coletou a Chave do Carro. \n')
-                time.sleep(0.5)
-                if 'Espingarda' in player.itens:
-                    print('Atirar na pessoa que o ataca?\n')
-                    acao = input('> ')
-                    if acao.lower in ['atirar', 'sim']:
-                        print('\nVocê matou quem te atacava, liberando o caminho até o carro. Você fugiu da cidade no carro o mais rápido possível.')
-                        gameOver('fugiu')
-                    elif acao.lower in ['fugir', 'não', 'não atirar']:
-                        print('\nVocê não atirou em quem te atacava e acabou sendo mordido!')
-                        if 'Vacina' in player.itens:
-                            print('Usar a Vacina em si mesmo?\n')
-                            acao = input('> ')
-                            if acao.lower in ['usar', 'sim']:
-                                print('\nVocê utilizou a vacina em si mesmo. Mas essa história ainda está longe de acabar.')
-                                gameOver('não infectado')
-                            elif acao.lower in ['não', 'não usar']:
-                                print('\nVocê não utilizou a vacina em si mesmo. Uma raiva incontrolável já toma conta de sua mente.')
-                                gameOver('infectado')
-                else:
-                    print('Você tentou fugir da pessoa que o atacava, mas ele foi mais rápido e você acabou sendo mordido.\n')
-                    gameOver('infectado')
-        if mapaCidade[player.localizacao][NOMEZONA] == 'Laboratório':
-            if 'Vacina' in player.itens == False:
-                player.itens.append('Vacina')
-                print('\nVocê coletou a vacina.')
-                print('\nVárias pessoas loucas invadiram a sala em que você está')
-                time.sleep(0.5)
-                print('\nE elas estão te atacando!')
-                if 'Espingarda' in player.itens:
-                    print('Atirar nas pessoas que o ataca?\n')
-                    acao = input('> ')
-                    if acao.lower in ['atirar', 'sim']:
-                        print('\nVocê matou algumas pessoas, mas eles eram muitos e você acabou sendo mordido mesmo assim!')
-                        time.sleep(0.5)
-                        print('\nVocê quer usar a vacina que conseguiu?')
+        if mapaCidade[player.localizacao][NOMEZONA] in ['Centro', 'Suburbio', 'Delegacia', 'Igreja', 'Hospital', 'Prefeitura']:
+            print(mapaCidade[player.localizacao][AOEXAMINAR])
+            mapaCidade[player.localizacao][SOLUCIONADO] = True
+        else:
+            if mapaCidade[player.localizacao][NOMEZONA] == 'Sala do Delegado':
+                print(mapaCidade[player.localizacao][AOEXAMINAR])
+                if 'Espingarda' not in player.itens:
+                    player.itens.append('Espingarda')
+                    print('\nVocê coletou a Espingarda. \n')
+                    mapaCidade[player.localizacao][SOLUCIONADO] = True
+            if mapaCidade[player.localizacao][NOMEZONA] == 'Salão Comunitário':
+                print(mapaCidade[player.localizacao][AOEXAMINAR])
+                if 'Chave de Carro' not in player.itens:
+                    player.itens.append('Chave de Carro')
+                    print('\nVocê coletou a Chave do Carro. \n')
+                    time.sleep(0.5)
+                    if 'Espingarda' in player.itens:
+                        print('Atirar na pessoa que o ataca?\n')
                         acao = input('> ')
-                        if acao.lower in ['sim', 'usar']:
-                            print('\nVocê usou a vacina em si mesmo.')
-                            if 'Chave do Carro' in player.itens:
-                                gameOver('fugiu')
-                            else:
-                                gameOver('não infectado')
-                        elif acao.lower in ['não', 'não usar']:
-                            print('\nVocê não usou a vacina em si mesmo, sabendo que não lhe resta muito tempo de vida.')
-                            time.sleep
-                            if 'Chave do Carro'in player.itens:
-                                gameOver('fugiu infectado')
-                else:
-                    print('\nVocê conseguiu fugir daqueles que te atacam com a vacina')
-                    if 'Chave do Carro' in player.itens:
-                        gameOver('fugiu com vacina')
+                        
+                        if acao.lower() in ['atirar', 'sim']:
+                            print('\nVocê matou quem te atacava, liberando o caminho até o carro. Você fugiu da cidade no carro o mais rápido possível.')
+                            mapaCidade[player.localizacao][SOLUCIONADO] = True
+                            gameOver('fugiu')
+                        elif acao.lower() in ['fugir', 'não', 'não atirar']:
+                            print('\nVocê não atirou em quem te atacava e acabou sendo mordido!')
+                            if 'Vacina' in player.itens:
+                                print('Usar a Vacina em si mesmo?\n')
+                                acao = input('> ')
+                                if acao.lower() in ['usar', 'sim']:
+                                    print('\nVocê utilizou a vacina em si mesmo. Mas essa história ainda está longe de acabar.')
+                                    mapaCidade[player.localizacao][SOLUCIONADO] = True
+                                    gameOver('não infectado')
+                                elif acao.lower() in ['não', 'não usar']:
+                                    print('\nVocê não utilizou a vacina em si mesmo. Uma raiva incontrolável já toma conta de sua mente.')
+                                    mapaCidade[player.localizacao][SOLUCIONADO] = True
+                                    gameOver('infectado')
                     else:
-                        gameOver('não infectado')
+                        print('Você tentou fugir da pessoa que o atacava, mas ele foi mais rápido e você acabou sendo mordido.\n')
+                        mapaCidade[player.localizacao][SOLUCIONADO] = True
+                        gameOver('infectado')
+            if mapaCidade[player.localizacao][NOMEZONA] == 'Laboratório':
+                print(mapaCidade[player.localizacao][AOEXAMINAR])
+                if 'Vacina' not in player.itens:
+                    player.itens.append('Vacina')
+                    print('\nVocê coletou a vacina.')
+                    print('\nVárias pessoas loucas invadiram a sala em que você está')
+                    time.sleep(0.5)
+                    print('\nE elas estão te atacando!')
+                    if 'Espingarda' in player.itens:
+                        print('Atirar nas pessoas que o ataca?\n')
+                        acao = input('> ')
+                        if acao.lower() in ['atirar', 'sim']:
+                            print('\nVocê matou algumas pessoas, mas eles eram muitos e você acabou sendo mordido mesmo assim!')
+                            time.sleep(0.5)
+                            print('\nVocê quer usar a vacina que conseguiu?')
+                            acao = input('> ')
+                            if acao.lower() in ['sim', 'usar']:
+                                print('\nVocê usou a vacina em si mesmo.')
+                                if 'Chave do Carro' in player.itens:
+                                    mapaCidade[player.localizacao][SOLUCIONADO] = True
+                                    gameOver('fugiu')
+                                else:
+                                    mapaCidade[player.localizacao][SOLUCIONADO] = True
+                                    gameOver('não infectado')
+                            elif acao.lower() in ['não', 'não usar']:
+                                print('\nVocê não usou a vacina em si mesmo, sabendo que não lhe resta muito tempo de vida.')
+                                time.sleep
+                                if 'Chave do Carro'in player.itens:
+                                    mapaCidade[player.localizacao][SOLUCIONADO] = True
+                                    gameOver('fugiu infectado')
+                    else:
+                        print('\nVocê conseguiu fugir daqueles que te atacam com a vacina')
+                        if 'Chave do Carro' in player.itens:
+                            mapaCidade[player.localizacao][SOLUCIONADO] = True
+                            gameOver('fugiu com vacina')
+                        else:
+                            mapaCidade[player.localizacao][SOLUCIONADO] = True
+                            gameOver('não infectado')
                     
                 
 # FUNCIONAMENTO DO JOGO #
@@ -367,15 +380,8 @@ def gameOver(causa):
         print('\nVocê fugiu da cidade sem ser infectado e com a vacina em mãos.')
     print('\n###################################\n')
     time.sleep(1)
-    print('Tentar novamente?\n')
-    opcao = input('> ')
-    if opcao.lower() in ['sim', 'tentar', 'reiniciar', 'jogar']:
-        os.system('cls')
-        telaInicial()
-    elif opcao.lower() in ['não', 'nao', 'sair']:
-        print('Obrigado por contar sua história aqui')
-        time.sleep(0.5)
-        sys.exit()
+    input('> Sair')
+    sys.exit()
     
     
 #loop principal do jogo
