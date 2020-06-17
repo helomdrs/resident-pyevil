@@ -114,7 +114,7 @@ mapaCidade = {
     'z1' : {
         NOMEZONA: 'Centro',
         DESCRICAO: 'Centro da cidade, com várias lojas e parques',
-        AOEXAMINAR: 'Todas as lojas foram saqueadas, algumas queimadas. Os parques estão cheios de pássaros mortos.',
+        AOEXAMINAR: 'Todas as lojas foram saqueadas, algumas queimadas. \nOs parques estão cheios de pássaros mortos.',
         SOLUCIONADO: False,
         ACIMA: 'none',
         ABAIXO: 'z4',
@@ -124,7 +124,7 @@ mapaCidade = {
     'z2' : {
         NOMEZONA: 'Suburbio',
         DESCRICAO: 'Grande área residencial da cidade',
-        AOEXAMINAR: 'Algumas casas estão abertas, outras estão lacradas de maneira improvidada. Está tudo silencioso até demais.',
+        AOEXAMINAR: 'Algumas casas estão abertas, outras estão lacradas de maneira improvidada. \nEstá tudo silencioso até demais.',
         SOLUCIONADO: False,
         ACIMA: 'none',
         ABAIXO: 'z5',
@@ -134,7 +134,7 @@ mapaCidade = {
     'z3' : {
         NOMEZONA: 'Delegacia',
         DESCRICAO: 'Maior Departamento Policial da cidade, centro de operações policiais',
-        AOEXAMINAR: 'O prédio está depredado, várias viaturas posicionadas como barreira se encontram pegando fogo ou quebradas, há um barulho de murmurio vindo de dentro do prédio',
+        AOEXAMINAR: 'O prédio está depredado, várias viaturas posicionadas como barreira se encontram pegando fogo ou quebradas, \nhá um barulho de murmurio vindo de dentro do prédio',
         SOLUCIONADO: False,
         ACIMA: 'none',
         ABAIXO: 'z6',
@@ -144,7 +144,7 @@ mapaCidade = {
     'z4' : {
         NOMEZONA: 'Igreja',
         DESCRICAO: 'Maior centro religioso da cidade, com um grande salão.',
-        AOEXAMINAR: 'Barricadas improvidadas cercam a igreja, mas parte dela está caída. Os vidros e as portas também foram lacradas com madeira. Não dá ver nada dentro do prédio.',
+        AOEXAMINAR: 'Barricadas improvidadas cercam a igreja, mas parte dela está caída. \nOs vidros e as portas também foram lacradas com madeira. \nNão dá ver nada dentro do prédio.',
         SOLUCIONADO: False,
         ACIMA: 'z1',
         ABAIXO: 'z7',
@@ -154,7 +154,7 @@ mapaCidade = {
     'z5' : {
         NOMEZONA: 'Hospital',
         DESCRICAO: 'Hospital público da cidade.',
-        AOEXAMINAR: 'Muitas ambulâncias cercam o local, há sangue e materiais hospitalares jogado pelo chão. Algumas entradas estão lacradas de maneira improvidsada.',
+        AOEXAMINAR: 'Muitas ambulâncias cercam o local, há sangue e materiais hospitalares jogado pelo chão. \nAlgumas entradas estão lacradas de maneira improvidsada.',
         SOLUCIONADO: False,
         ACIMA: 'z2',
         ABAIXO: 'z8',
@@ -164,7 +164,7 @@ mapaCidade = {
     'z6' : {
         NOMEZONA: 'Prefeitura',
         DESCRICAO: 'O maior prédio da cidade, a prefeitura com fórum e câmara municipal.',
-        AOEXAMINAR: 'Há uma grande barricada cercando o prédio, com algumas partes destruídas. Várias viaturas e carros também estão amontoados. Há barulhos de passos dentro do prédio.',
+        AOEXAMINAR: 'Há uma grande barricada cercando o prédio, com algumas partes destruídas. \nVárias viaturas e carros também estão amontoados. \nHá barulhos de passos dentro do prédio.',
         SOLUCIONADO: False,
         ACIMA: 'z3',
         ABAIXO: 'z9',
@@ -174,7 +174,7 @@ mapaCidade = {
     'z7' : {
         NOMEZONA: 'Sala do Delegado',
         DESCRICAO: 'A sala está toda revirada, com mesas dispostas como se fossem uma barreira para a janela, há jornais espalhados pelo chão.',
-        AOEXAMINAR: 'O jornal diz que pessoas atacaram outras, comendo-as. Você encontrou uma espingarda debaixo dos papéis, com apenas uma bala.',
+        AOEXAMINAR: 'O jornal diz que pessoas atacaram outras, comendo-as. \nVocê encontrou uma espingarda debaixo dos papéis, com apenas uma bala.',
         SOLUCIONADO: False,
         ACIMA: 'z4',
         ABAIXO: 'none',
@@ -184,7 +184,7 @@ mapaCidade = {
     'z8' : {
         NOMEZONA: 'Salão Comunitário',
         DESCRICAO: 'O cheio de sangue e pessoas mortas é forte, há muitos objetos espalhos pelo chão.',
-        AOEXAMINAR: 'Você encontrou uma chave de um carro que estava lá fora. Uma pessoa (se isso pode ser chamado de pessaoa) está te atacando!',
+        AOEXAMINAR: 'Você encontrou uma chave de um carro que estava lá fora. \nUma pessoa (se isso pode ser chamado de pessaoa) está te atacando!',
         SOLUCIONADO: False,
         ACIMA: 'z5',
         ABAIXO: 'none',
@@ -207,10 +207,10 @@ mapaCidade = {
 
 #função para mostrar a localização do jogador no mapa
 def mostrarLocalizacao():
-    print('===================================')
+    print('\n===================================')
     print(mapaCidade[player.localizacao][NOMEZONA].upper())
     print(mapaCidade[player.localizacao][DESCRICAO])
-    print('===================================')
+    print('===================================\n')
 
 #função para pegar a ação do usuário
 def prompt():
@@ -292,7 +292,7 @@ def playerExaminar(acao):
                         acao = input('> ')
                         
                         if acao.lower() in ['atirar', 'sim']:
-                            print('\nVocê matou quem te atacava, liberando o caminho até o carro. Você fugiu da cidade no carro o mais rápido possível.')
+                            print('\nVocê matou quem te atacava, liberando o caminho até o carro. \nVocê fugiu da cidade no carro o mais rápido possível.')
                             mapaCidade[player.localizacao][SOLUCIONADO] = True
                             gameOver('fugiu')
                         elif acao.lower() in ['fugir', 'não', 'não atirar']:
@@ -359,7 +359,7 @@ def gameOver(causa):
     print('\n##### G A M E  O V E R #########\n')
     player.ganhouJogo = True
     if causa == 'infectado':
-        final = "Você foi infectado por aquele que te atacou. Uma fome incontrolável toma conta do seu corpo, você já não se lembra do seu nome ou de quem é, vê apenas fome."
+        final = "Você foi infectado por aquele que te atacou. \nUma fome incontrolável toma conta do seu corpo, você já não se lembra do seu nome ou de quem é, vê apenas fome."
         efeitoDigitacao(final)
         print('\nVocê virou um zumbi.')
     elif causa == 'fugiu':
@@ -371,11 +371,11 @@ def gameOver(causa):
         efeitoDigitacao(final)
         print('\nVocê não conseguiu fugir da cidade, mas ainda está lucido e ávido para sobreviver.')
     elif causa == 'fugiu infectado':
-        final = "Mesmo sabendo que não tem muito tempo, você fugiu da cidade com a vacina, mas infectado com um único objetivo em mente: dar a alguém a oportunidade de salvar a humanidade."
+        final = "Mesmo sabendo que não tem muito tempo, você fugiu da cidade com a vacina, \nmas infectado com um único objetivo em mente: \ndar a alguém a oportunidade de salvar a humanidade."
         efeitoDigitacao(final)
         print('\nVocê fugiu da cidade infectado para tentar entregar a vacina a alguém.')
     elif causa == 'fugiu com a vacina':
-        final = "Você conseguiu fugir da cidade com a vacina em mãos na esperança de encontrar alguém que possa disseminar a cura. Sua jornada só está começando."
+        final = "Você conseguiu fugir da cidade com a vacina em mãos na esperança de encontrar alguém que possa disseminar a cura. \nSua jornada só está começando."
         efeitoDigitacao(final)
         print('\nVocê fugiu da cidade sem ser infectado e com a vacina em mãos.')
     print('\n###################################\n')
