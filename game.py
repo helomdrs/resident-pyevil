@@ -285,12 +285,25 @@ def playerExaminar(acao):
                 player.itens.append('Chave de Carro')
                 print('\nVocê coletou a Chave do Carro. \n')
                 time.sleep(0.5)
-                print('Atirar na pessoa que o ataca?\n')
-                acao = input('> ')
-                if acao.lower in ['atirar', 'sim']:
-                    print('\nVocê matou quem te atacava, liberando o caminho até o carro. Você fugiu da cidade no carro o mais rápido possível.')
-                elif acao.lower in ['fugir', 'não', 'não atirar']:
-                    print('\nVocê não atirou em quem te atacava e acabou sendo mordido!')
+                if 'Espingarda' in player.itens:
+                    print('Atirar na pessoa que o ataca?\n')
+                    acao = input('> ')
+                    if acao.lower in ['atirar', 'sim']:
+                        print('\nVocê matou quem te atacava, liberando o caminho até o carro. Você fugiu da cidade no carro o mais rápido possível.')
+                        gameOver('fugiu')
+                    elif acao.lower in ['fugir', 'não', 'não atirar']:
+                        print('\nVocê não atirou em quem te atacava e acabou sendo mordido!')
+                        if 'Vacina' in player.itens:
+                            print('Usar a Vacina em si mesmo?\n')
+                            acao = input('> ')
+                            if acao.lower in ['usar', 'sim']:
+                                print('\nVocê utilizou a vacina em si mesmo. Mas essa história ainda está longe de acabar.')
+                                gameOver('não infectado')
+                            elif acao.lower in ['não', 'não usar']:
+                                print('\nVocê não utilizou a vacina em si mesmo. Uma raiva incontrolável já toma conta de sua mente.')
+                                gameOver('infectado')
+                else:
+                    print('Você tentou fugir da pessoa que o atacava, mas ele foi mais rápido e você acabou sendo mordido.\n')
                     gameOver('infectado')
         if mapaCidade[player.localizacao][NOMEZONA] == 'Laboratório':
             if 'Vacina' in player.itens == False:
@@ -309,21 +322,23 @@ def playerExaminar(acao):
                         acao = input('> ')
                         if acao.lower in ['sim', 'usar']:
                             print('\nVocê usou a vacina em si mesmo.')
-                            gameOver('infectado')
+                            if 'Chave do Carro' in player.itens:
+                                gameOver('fugiu')
+                            else:
+                                gameOver('não infectado')
                         elif acao.lower in ['não', 'não usar']:
                             print('\nVocê não usou a vacina em si mesmo, sabendo que não lhe resta muito tempo de vida.')
                             time.sleep
-                            if 'Chave do Carro' or 'Espingarda' in player.itens:
-                                print('\nVocê entrega todos os itens que tem consigo para seu filho, para que ele tenha uma chance de escapar.')
-                                time.sleep(0.5)
-                                print('\nMas infelizmente, você não sobrevierá para saber se ele vai conseguir ou não.')
-                                gameOver('infectado')
-                            elif acao.lower in ['fugir', 'não', 'não atirar']:
-                                print('\nVocê não se defendeu e ambos acabaram sendo mordidos!')
+                            if 'Chave do Carro'in player.itens:
+                                gameOver('fugiu infectado')
+                else:
+                    print('\nVocê conseguiu fugir daqueles que te atacam com a vacina')
+                    if 'Chave do Carro' in player.itens:
+                        gameOver('fugiu com vacina')
+                    else:
+                        gameOver('não infectado')
                     
                 
-        
-        
 # FUNCIONAMENTO DO JOGO #
 
 #função de game over
